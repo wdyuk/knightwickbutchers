@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mike182uk/cart": "^3.0",
+        "stripe/stripe-php": "^7.52"
+    }
+}

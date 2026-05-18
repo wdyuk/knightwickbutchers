@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  <!--
+  table { vertical-align: top; }
+  tr    { vertical-align: top; }
+  td    { vertical-align: top; }
+  -->
+  div { box-sizing: border-box; }
+    .container { width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px; }
+    .col { width: 100%; display: inline-block; padding: 0px 15px;  }
+    .col2 { width: 50%; display: inline-block; padding: 0px 15px;  }
+    .text-center { text-align: center; }
+    .para-text{ margin: 0; padding: 3px 0px;}
+    .td-class{padding-bottom: 15px;}
+    .letter-title{font-weight: bold; text-decoration: underline;}
+    .footer-text{margin: 0;}
+    .bottom-line{margin-bottom: 10px;}
+    .bottom-text{font-size: 10px; margin: 0;}
+    table, th, td .nos-tables{
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    .nos-cells{
+      border: 1px solid black;
+      text-align: center;
+      font-size: 12px;
+    }
+   table .nos-tables {
+    width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<!--mpdf
+  <htmlpageheader name="myheader">
+    <img src="{{BASE_URL}}resources/images/favicon.png" style="margin-top: 20px; width: 100px; float: right;">
+  </htmlpageheader>
+  <htmlpagefooter name="myfooter">
+    <table style="border: none; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="1">
+          <p class="footer-text">{{BRANCH_ADDRESS}}</p>
+          <p class="footer-text">Tel: {{BRANCH_NUMBER}}</p>
+          <p class="footer-text">Email: {{BRANCH_EMAIL}}</p>
+          <p class="footer-text bottom-line">Web: www.rmenglish.co.uk</p>
+          <p class="bottom-text">Associated Offices: {{OTHER_BRANCHES}}</p>
+          <p class="bottom-text">Directors: S A Burley MRICS. J Burley BSc MRICS Dip Business Management</p>
+          <p class="bottom-text">VAT Reg No. 182577086   Registered in England 8858304</p>
+        </td>
+        <td colspan="1" style="float:right;">
+          <img src="{{BASE_URL}}resources/images/letter-footer.png" style="float:right; height: 100px; margin-left:50px;">
+        </td>
+      </tr>
+    </table>
+  </htmlpagefooter>
+  <sethtmlpageheader name="myheader" value="on" show-this-page="1" />
+  <sethtmlpagefooter name="myfooter" value="on" />
+mpdf-->
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="1" style="width: 50%; padding-top: 70px;" class="td-class">            
+            
+            
+          <p class="para-text">{{Vendor_Solicitor_LetterName}}</p>
+          <p class="para-text">{{Vendor_Solicitor_CompanyName}}</p>
+          <p class="para-text">{{Vendor_Solicitor_Address_Multi_Line}}</p>
+          <br/>
+          <br/>
+          <p class="para-text">{{Date_Issued}}</p>
+        </td>
+        <td colspan="1" style="width: 50%;" class="td-class">
+    
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%; padding-top: 30px;" class="td-class">
+          <p class="para-text">Dear {{Vendor_Solicitor_FormalName}}</p>
+          <br/>
+          <p class="letter-title">Re: {{Property_Address_Single_Line}}</p>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">We enclose our Notification of Sale, which confirms our mutual clients' sale of the above property, subject to contract.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">Could you please submit a draft contract to the buyer's solicitors as soon as possible.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">If you need any further information, please do not hesitate to get in touch with either myself or one of my colleagues.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">Yours sincerely</p>
+          <br/>
+          {{Negotiator_Signature}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">{{Negotiator_FullName}}</p>
+          <p class="para-text">R M English</p>
+        </td>
+      </tr>
+    </table>
+    <pagebreak>
+      <table style="border: none; text-align:center; width:100%; padding:0px; margin: 0px 0px 30px 0px;">
+        <tr style="padding-top: 80px; padding-bottom: 30px;">
+          <td colspan="1">
+            <h1>NOTIFICATION OF SALE</h1>
+            <h3 style="padding-bottom:30px;">(SUBJECT TO CONTRACT)</h3>
+            <br/>
+          </td>
+        </tr>
+      </table>
+      <table style="border: solid 1px #000000; text-align:left; width:100%; padding:0px; margin: 0px;">
+        <tr>
+          <td class="nos-cells">Property Address</td>
+          <td class="nos-cells">{{Property_Address_Multi_Line}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Sale Price Agreed</td>
+          <td class="nos-cells">{{Property_BuyingPrice}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Buyer Position</td>
+          <td class="nos-cells">{{Buyer_Position}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Preferred Exchange Date</td>
+          <td class="nos-cells">{{Preferred_Exchange_Date}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Preferred Completion Date</td>
+          <td class="nos-cells">To be agreed between both parties</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Any Other Information</td>
+          <td class="nos-cells">{{Other_Information}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Personal Interests Declared</td>
+          <td class="nos-cells">{{Personal_Interests}}</td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Date of Instruction</td>
+          <td class="nos-cells">{{Date_of_Instruction}}</td>
+        </tr>
+      </table>
+      <table style="border: solid 1px #000000; text-align:left; width:100%; padding:0px; margin: 40px 0px 0px 0px;">
+        <tr>
+          <td class="nos-cells">Seller</td>
+          <td class="nos-cells">
+            {{Vendor_TFS}}
+            {{Vendor_Address_Multi_Line}}
+          </td>
+          <td class="nos-cells">
+            {{Vendor_MainNumbers}}
+            {{Vendor_OtherNumbers}}
+            {{Vendor_Email}}
+          </td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Seller's Solicitors</td>
+          <td class="nos-cells">
+            {{Vendor_Solicitor_CompleteName}}
+            {{Vendor_Solicitor_CompanyName}}
+            {{Vendor_Solicitor_Address_Multi_Line}}
+          </td>
+          <td class="nos-cells">
+            {{Vendor_Solicitor_MainNumber}}
+            {{Vendor_Solicitor_Email}}
+          </td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Buyer</td>
+          <td class="nos-cells">
+            {{Applicant_TFS}}
+            {{Applicant_Address_Multi_Line}}
+          </td>
+          <td class="nos-cells">
+          </td>
+        </tr>
+        <tr>
+          <td class="nos-cells">Buyer's Solicitors</td>
+          <td class="nos-cells">
+            {{Applicant_Solicitor_CompleteName}}
+            {{Applicant_Solicitor_CompanyName}}
+            {{Applicant_Solicitor_Address_Multi_Line}}
+          </td>
+          <td class="nos-cells">
+            {{Applicant_Solicitor_MainNumber}}
+            {{Applicant_Solicitor_Email}}
+          </td>
+        </tr>
+      </table>
+  </body>
+</html>

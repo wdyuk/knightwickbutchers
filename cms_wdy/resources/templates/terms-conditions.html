@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  <!--
+  table { vertical-align: top; }
+  tr    { vertical-align: top; }
+  td    { vertical-align: top; }
+  -->
+  div { box-sizing: border-box; }
+    .container { width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px; }
+    .col { width: 100%; display: inline-block; padding: 0px 15px;  }
+    .col2 { width: 50%; display: inline-block; padding: 0px 15px;  }
+    .text-center { text-align: center; }
+    .para-text{ margin: 0; padding: 3px 0px;}
+    .td-class{padding-bottom: 15px;}
+    .letter-title{font-weight: bold; text-decoration: underline;}
+    .footer-text{margin: 0;}
+    .bottom-line{margin-bottom: 10px;}
+    .bottom-text{font-size: 10px; margin: 0;}
+    table, th, td .additional-costs-table{
+      border: 1px solid black;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .additional-cells{
+      border: 1px solid black;
+      text-align: center;
+
+    }
+   table .additional-costs-table {
+   	width: 100%;
+    }
+    p{
+      font-size: 12px;
+    }
+</style>
+</head>
+<body>
+<!--mpdf
+  <htmlpageheader name="myheader">
+  </htmlpageheader>
+  <htmlpagefooter name="myfooter">
+  </htmlpagefooter>
+  <sethtmlpageheader name="myheader" value="on" show-this-page="1" />
+  <sethtmlpagefooter name="myfooter" value="on" />
+mpdf-->
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="1">
+          <img src="{{BASE_URL}}resources/images/favicon.png" style="width: 80px; float: left; display:inline-block;">
+        </td>
+        <td colspan="1" valign="middle" style="padding-top: 28px;">
+          <h1 style="display:inline-block;">AGENCY AGREEMENT</h1>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" style="width: 50%; padding-top: 20px; padding-right: 10px;" class="td-class">
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px 0px 20px 0px; background-color: #DBF3FA;">
+            <tr style="padding-bottom: 12px;">
+              <td colspan ="1">
+                <p><strong>Address of Property</strong></p>
+                <p>{{Property_Address_Single_Line}}</p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1">
+                <p><strong>Full name(s) of seller(s)</strong></p>
+                <p>{{Vendor_CompleteName}}</p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1">
+                <p><strong>Address of Seller</strong></p>
+                <p>{{Vendor_Address_Single_Line}}</p>
+                <p>&nbsp;</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1">
+                <p>It is a legal requirement that estate agents must provide sellers with written details of how costs will be calculated and when payments are due. These are as detailed in this agreement.</p>
+                <br/>
+                <p>You (the Seller) agree to appoint R M English (York) Limited (the Agent) to sell your home/land in accordance with this agreement.  Any variation to this agreement must be made in writing and signed by the Agent.</p>
+              </td>
+            </tr>
+          </table>
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px 0px 20px 0px; background-color: #DBF3FA;">
+            <tr>
+              <td colspan ="1">
+                <p><strong>AGREED {{Price_Qualifier}} {{Property_Price}}</strong></p>
+                <p>&nbsp;</p>
+                <p>This figure is for marketing purposes and not a valuation.</p>
+              </td>
+            </tr>
+          </table>
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px 0px 20px 0px; background-color: #DBF3FA;">
+            <tr>
+              <td colspan ="1">
+                <p><strong>FEES</strong></p>
+                {{Fees_Information}}
+              </td>
+            </tr>
+          </table>
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px 0px 20px 0px;">
+            <tr>
+              <td colspan ="1">
+                <p><strong>ADDITIONAL COSTS</strong></p>
+                <p>The following additional charges will apply.</p>
+              </td>
+            </tr>
+            <tr style="background-color: #DBF3FA;">
+              <td colspan ="1">
+                <table class="additional-costs-table">
+                  <tr>
+                    <td class="additional-cells"></td>
+                    <td class="additional-cells">Additional</td>
+                    <td class="additional-cells">Withdrawal</td>
+                  </tr>
+                  <tbody>
+                    <tr>
+                      <td class="additional-cells">Photography</td>
+                      <td class="additional-cells">{{PhotoAdd}}</td>
+                      <td class="additional-cells">{{PhotoWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">EPC</td>
+                      <td class="additional-cells">{{EPCAdd}}</td>
+                      <td class="additional-cells">{{EPCWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">For Sale board</td>
+                      <td class="additional-cells">{{FSBAdd}}</td>
+                      <td class="additional-cells">{{FSBWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">Advertising</td>
+                      <td class="additional-cells">{{AdvAdd}}</td>
+                      <td class="additional-cells">{{AdvWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">Administration</td>
+                      <td class="additional-cells">{{AdmAdd}}</td>
+                      <td class="additional-cells">{{AdmWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">Other</td>
+                      <td class="additional-cells">{{OtherAdd}}</td>
+                      <td class="additional-cells">{{OtherWith}}</td>
+                    </tr>
+                    <tr>
+                      <td class="additional-cells">Withdrawal Fee</td>
+                      <td class="additional-cells">{{WithdrawalFeeAdd}}</td>
+                      <td class="additional-cells">{{WithdrawalFeeWith}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <table style="border: none; text-align:left; width:100%; padding:0px;">
+            <tr>
+              <td colspan ="1">
+                <p><strong>TERMINATION</strong></p>
+                <p>The Seller & Agent agree to a {{Agency_Type}} for a minimum period of <strong>{{Fixed_Weeks}}</strong> weeks from the date of this agreement.</p>
+                <br/>
+                <p>Termination of this agreement after this time must be in writing by either party giving <strong>{{Days_Notice}}</strong> days notice.</p>
+                <br/>
+                <p>If the Seller withdraws from a sale of their property/land once terms have been agreed and solicitors instructed, the Agent reserves the right to charge 50% of the aforesaid fee, to cover costs incurred</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="1" style="width: 50%; padding-top: 20px; padding-left: 10px;" class="td-class">
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+            <tr>
+              <td colspan = "1" style="padding-bottom: 20px;">
+                <p><strong>FOR SALE BOARD</strong></p>
+                <p>Do you agree to a for sale board being erected?.......YES/NO *</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>DECLARATION OF PERSONAL INTEREST</strong></p>
+                <p>As defined in Section 21 of the Estate Agents Act 1979, the Agent is required to disclose any personal interest to any prospective purchaser.  Should the Seller be aware of any personal interest existing between the Agent or anyone in their employ, or any connected person(s) and the Seller, full details must be provided to the Agent.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>RIGHT TO CANCEL</strong></p>
+                <p>Should this agreement be signed outside the offices of the Agent in the presence of an employee of the Agent, the Seller has the right to cancel the agreement within 14 days of the date of the agreement.  This Notice of Right to Cancel should be in writing and will be acknowledged by the Agent on receipt.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan = "1" style="padding-bottom: 20px;">
+                <p><strong>DECLARATION</strong></p>
+                <p style="padding-bottom: 20px;">I/We confirm that we have read the Agency Agreement herewith, prior to signing.</p>
+                <br/>
+                <p style="padding-bottom: 20px;">I/We confirm that we appoint R M English (York) Limited as the Agent in accordance with this Agency Agreement.</p>
+                <br/>
+                <p style="padding-bottom: 20px;">Both parties and the signatories to this agreement confirm that they are authorised and permitted to enter into this agreement, and have obtained all necessary permissions and approvals.</p>
+                <br/>
+                <p style="padding-bottom: 20px;">I/We agree that the Agent can market our property/land from the date of this agreement.</p>
+                <br/>
+                <p style="padding-bottom: 20px;">I/We agree that if we enforce our Right to Cancel in accordance with Consumer Contracts Regulations 2013, we will pay the Agent £200 including VAT to cover disbursements.</p>
+              </td>
+            </tr>
+          </table>
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px; background-color: #DBF3FA;">
+            {{Seller_Block}}
+            <tr>
+              <td colspan ="1" style="padding-top: 10px;">
+                <p>For & on behalf of Agent ..........................................................</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-top: 10px;">
+                <p>Date ..................................................................................</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px; color:#808080;">
+      <tr>
+        <td colspan="1" style="width: 50%; padding-top: 20px; padding-right: 10px;" class="td-class">
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>SOLE AGENCY / SOLE SELLING RIGHTS </strong></p>
+                <p>If the Seller appoints the Agent to act as sole selling agent, they are entering into a legally binding contract giving the Agent the right to act as their only estate agent during the term of this agreement.  You may be liable to pay the Agent the agreed fee and/or costs should a buyer be introduced by any other agent during the period of the sole agency agreement.</p>
+                <br/>
+                <p>If the Seller appoints the Agent as sole agent the Seller will be liable to pay the Agent the agreed fee and costs if an unconditional contract is exchanged for the sale of the property/land to a purchaser:-</p>
+                <br/>
+                <p>a)   introduced by the Agent during the period of sole agency, or with whom the Agent had negotiations about the property/land during that period.</p>
+                <p>b)   introduced by any other agent during the period of the sole agency.</p>
+                <p>c)   who has made a private offer direct to the Seller.</p>
+                <br/>
+                <p><strong>MULTI/JOINT AGENCY</strong></p>
+                <p>If the Seller appoints the Agent as multiple agent the Seller will be liable to pay the Agent the agreed fee and costs if an unconditional contract is exchanged at any time for the sale of the property/land to a purchaser:-</p>
+                <br/>
+                <p>a)   introduced by the Agent during the period of sole agency, or with whom the Agent had negotiations about the property/land during that period.</p>
+                <br/>
+                <p>If the Seller terminates the agreement with the Agent, the Agent will be entitled to claim the agreed fee and costs for any person introduced to the property/land by the Agent during the period of the agreement, who proceeds with the purchase of the property/land through another agent, up to a period of six months from the termination date of the agreement.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>IDENTITY OF BUYER</strong></p>
+                <p>If the Seller accepts an offer for the property/land either privately or through any other agent, the Seller agrees to disclose the identity of the buyer to the Agent prior to exchange of contracts.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>PAYMENTS AND COMMISSIONS</strong></p>
+                <p>The agreed fee and costs will be payable if an unconditional contract is exchanged for the sale of the property/land.  The Seller agrees to instruct their solicitor to pay the Agent's fee and costs out of the net proceeds of sale on legal completion of the sale, if not paid before. If any invoice remains unpaid after the date on which it is due, the cost incurred in recovering the debt may be added.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>VAT</strong></p>
+                <p>All charges made by the Agent are subject to VAT at the prevailing rate.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>FAILED LEGAL COMPLETION</strong></p>
+                <p>If contracts are exchanged and the buyer fails to complete the purchase, the Agent reserves the right to charge 50% of the agreed sale fee plus any outstanding marketing expenses, plus VAT.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1">
+                <p><strong>ACCURACY OF INFORMATION</strong></p>
+                <p>It is the responsibility of the Seller to check any descriptions of the property, information or data which will be used for marketing purposes, and must inform the Agent immediately of any inaccuracies or amendments.  The Agent accepts no liability for any consequential loss and the Seller agrees to indemnify the Agent in respect of any claims for such loss.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="1" style="width: 50%; padding-top: 20px; padding-left: 10px;" class="td-class">
+          <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>UNOCCUPIED PROPERTY</strong></p>
+                <p>The Agent does not accept responsibility for the maintenance or repair of an unoccupied property unless we have an agreement in writing.  It is the responsibility of the Seller to ensure that mains services are turned off, water and heating systems are professionally drained, and the insurers are notified.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>LIABILITY</strong></p>
+                <p>The total liability of the Agent for any direct loss or damage caused by negligence or breach of contract (except deliberate breach) is limited to the higher of £50,000 or ten times the fee.  No liability is accepted for any indirect or consequential loss (such as loss of profits).  These limitations do not apply to death, personal injury or fraud.</p>
+                <p>The Seller agrees not to bring any claim against any member, employee, or consultant of the Agent.  These individuals do not have a personal duty of care.  Any such claim must be brought against the Seller.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>PUBLICITY</strong></p>
+                <p>The Seller authorises the Agent to publish promotional material (including photographs) relating to the sale of their property/land, including after the agreement ends.  We will not disclose confidential information.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>DOCUMENTS</strong></p>
+                <p>Documents left in the possession of the Agent will be destroyed after six years unless their return is requested by the Seller.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>ANTI-MONEY LAUNDERING REGULATIONS 2017</strong></p>
+                <p>Under the terms of the regulations, the Agent is required to verify the identity of all new clients who enter into a business relationship with them. The Agent is required to obtain this information and keep a record of this on file.  The Agent will give guidance about permitted forms of identity and proof of address.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>ROYAL INSTITUTE OF CHARTERED SURVEYORS</strong></p>
+                <p>The Agents are members of the RICS </p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>THE PROPERTY OMBUDSMAN</strong></p>
+                <p>As a member of The Property Ombudsman (TPO) scheme, the Agents subscribe to their code of practice.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>COMPLAINTS PROCEDURE</strong></p>
+                <p>A copy of the Agent's complaints procedure can be provided upon request.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>LAW</strong></p>
+                <p>These terms are subject to the laws of England and Wales and the exclusive jurisdiction of the courts of England and Wales. If a court rules that any provision of these terms is invalid or unenforceable, this will not affect the rest of the terms, which will remain in force.</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan ="1" style="padding-bottom: 20px;">
+                <p><strong>REGISTERED OFFICE</strong></p>
+                <p>{{Office_Address}}</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

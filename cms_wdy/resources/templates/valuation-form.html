@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  <!--
+  table { vertical-align: top; }
+  tr    { vertical-align: top; }
+  td    { vertical-align: top; }
+  -->
+  div { box-sizing: border-box; }
+    .container { width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px; }
+    .col { width: 100%; display: inline-block; padding: 0px 15px;  }
+    .col2 { width: 50%; display: inline-block; padding: 0px 15px;  }
+    .text-center { text-align: center; }
+    .para-text{ margin: 0; padding: 3px 0px; display: inline-block;}
+    .td-class{padding-bottom: 15px; border: solid 2px;}
+    .element{display: inline-block;}
+    .border-top{border-top: solid 2px;}
+    .border-lr{border-left: solid 2px; border-right: solid 2px;}
+    .border-bottom{border-bottom: solid 2px;}
+  }
+</style>
+</head>
+<body>
+<!--mpdf
+  <htmlpageheader name="myheader">
+  </htmlpageheader>
+  <htmlpagefooter name="myfooter">
+    </table>
+  </htmlpagefooter>
+  <sethtmlpageheader name="myheader" value="on" show-this-page="1" />
+  <sethtmlpagefooter name="myfooter" value="on" />
+mpdf-->
+  <table style="border: none; text-align:center; width:100%; padding:0px; margin: 0px;">
+    <tr class="text-center">
+      <td style="width: 100%;">
+        <img src="{{BASE_URL}}resources/images/favicon.png" style="margin-top: 20px; width: 160px;">
+      </td>
+    </tr>
+    <tr class="text-center">
+      <td style="width: 100%;">
+        <h2>Marketing Appraisal</h2>
+      </td>
+    </tr>
+  </table>
+  <table style="border: none; text-align:center; width:100%; padding:0px; margin: 0px;">
+    <tr>
+      <td style="width: 50%;" class="td-class">
+        <h4 class="element" style="margin: 0;">Booked By:</h4>
+        <p class="para-text">{{BOOKEDBY}}</p>
+      </td>
+      <td style="width: 50%;" class="td-class">
+        <h4 class="element" style="margin: 0;">Lister:</h4>
+        <p class="para-text">{{LISTER}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width: 100%;" class="td-class">
+        <h4 class="element" style="margin: 0;">Date &amp; Time of Appointment:</h4>
+        <p class="para-text">{{TIMEDATE}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width: 100%;" class="td-class">
+        <h4 style="margin: 0;">Vendor's names &amp; Telephone Number:</h4>
+        <p class="para-text">{{VENDORS}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 50%;" class="td-class">
+        <h4 style="margin: 0;">Address of Property to be Sold:</h4>
+        <p class="para-text">{{PROPERTYFORSALE}}</p>
+      </td>
+      <td style="width: 50%;" class="td-class">
+        <h4 style="margin: 0;">Correspondence Address:</h4>
+        <p class="para-text">{{CORRESPONDENCE}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width: 100%;" class="td-class">
+        <h4 class="element" style="margin: 0;">DESCRIPTION OF PROPERTY TO BE SOLD:</h4>
+        <p class="para-text">{{DETAILS}}</p>
+      </td>
+    </tr>
+  </table>
+  <pagebreak></pagebreak>
+  <table style="border: solid 2px; text-align:left; width:100%; padding:0px; margin: 0px;">
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0; text-align: center;">Valuation &amp; Take on Details</h4>
+        <br/>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Our assessment of Price &pound;:</h4>
+        <br/><br/>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Agency:</h4>
+        <p class="para-text">SOLE / MULTI</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Fees Quoted:</h4>
+        <br/><br/>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Sole</h4>
+        <p class="para-text">.................</p>
+        <h4 class="element" style="margin: 0;">Multi</h4>
+        <p class="para-text">.................</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Marketing Price Agreed &pound;</h4>
+        <br/><br/>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">For Sale Board:</h4>
+        <p class="para-text">YES / NO</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">Viewing Arrangements:</h4>
+        <br/><br/><br/>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        <h4 class="element" style="margin: 0;">NOTES</h4>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

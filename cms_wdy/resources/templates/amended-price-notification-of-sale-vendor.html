@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  <!--
+  table { vertical-align: top; }
+  tr    { vertical-align: top; }
+  td    { vertical-align: top; }
+  -->
+  div { box-sizing: border-box; }
+    .container { width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px; }
+    .col { width: 100%; display: inline-block; padding: 0px 15px;  }
+    .col2 { width: 50%; display: inline-block; padding: 0px 15px;  }
+    .text-center { text-align: center; }
+    .para-text{ margin: 0; padding: 3px 0px;}
+    .td-class{padding-bottom: 15px;}
+    .letter-title{font-weight: bold; text-decoration: underline;}
+    .footer-text{margin: 0;}
+    .bottom-line{margin-bottom: 10px;}
+    .bottom-text{font-size: 10px; margin: 0;}
+    table, th, td .nos-tables{
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    .nos-cells{
+      border: 1px solid black;
+      text-align: center;
+      font-size: 12px;
+    }
+   table .nos-tables {
+    width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<!--mpdf
+  <htmlpageheader name="myheader">
+    <img src="{{BASE_URL}}resources/images/favicon.png" style="margin-top: 20px; width: 100px; float: right;">
+  </htmlpageheader>
+  <htmlpagefooter name="myfooter">
+    <table style="border: none; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="1">
+          <p class="footer-text">{{BRANCH_ADDRESS}}</p>
+          <p class="footer-text">Tel: {{BRANCH_NUMBER}}</p>
+          <p class="footer-text">Email: {{BRANCH_EMAIL}}</p>
+          <p class="footer-text bottom-line">Web: www.rmenglish.co.uk</p>
+          <p class="bottom-text">Associated Offices: {{OTHER_BRANCHES}}</p>
+          <p class="bottom-text">Directors: S A Burley MRICS. J Burley BSc MRICS Dip Business Management</p>
+          <p class="bottom-text">VAT Reg No. 182577086   Registered in England 8858304</p>
+        </td>
+        <td colspan="1" style="float:right;">
+          <img src="{{BASE_URL}}resources/images/letter-footer.png" style="float:right; height: 100px; margin-left:50px;">
+        </td>
+      </tr>
+    </table>
+  </htmlpagefooter>
+  <sethtmlpageheader name="myheader" value="on" show-this-page="1" />
+  <sethtmlpagefooter name="myfooter" value="on" />
+mpdf-->
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="1" style="width: 50%; padding-top: 70px;" class="td-class">
+          <p class="para-text">{{Vendor_CompleteName}}</p>
+          <p class="para-text">{{Vendor_Address_Multi_Line}}</p>
+          <br/>
+          <br/>
+          <p class="para-text">{{Date_Issued}}</p>
+        </td>
+        <td colspan="1" style="width: 50%;" class="td-class">
+    
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%; padding-top: 30px;" class="td-class">
+          <p class="para-text">Dear {{Vendor_FormalName}}</p>
+          <br/>
+          <p class="letter-title">Re: {{Property_Address_Single_Line}}</p>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">Further to our conversation, we confirm that the sale price has been amended to <strong>£{{New_Offer}}</strong>, and that we have notified all parties.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">We trust that the sale will now progress through to exchange of contracts and legal completion.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">However, if you wish to discuss the matter, please do not hesitate to contact us.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">Yours sincerely</p>
+          <br/>
+          {{Negotiator_Signature}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width: 100%;" class="td-class">
+          <p class="para-text">{{Negotiator_FullName}}</p>
+          <p class="para-text">R M English</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

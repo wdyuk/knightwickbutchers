@@ -1,0 +1,114 @@
+<style type="text/css">
+  <!--
+  table { vertical-align: top; }
+  tr    { vertical-align: top; }
+  td    { vertical-align: top; }
+  -->
+  div { box-sizing: border-box; }
+    .container { width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px; }
+    .col { width: 100%; display: inline-block; padding: 0px 15px;  }
+    .col2 { width: 50%; display: inline-block; padding: 0px 15px;  }
+    .text-center { text-align: center; }
+    .para-text{ margin: 0; padding: 3px 0px;}
+    .td-class{padding-bottom: 15px;}
+  }
+</style>
+
+<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
+    <table style="border: none; text-align:center; width:100%; padding:0px; margin: 0px;">
+      <tr class="text-center">
+        <td style="width: 100%;">
+          <img src="{{BASE_DIR}}resources/images/favicon.png" style="margin-top: 20px; width: 160px;">
+        </td>
+      </tr>
+      <tr class="text-center">
+        <td style="width: 100%;">
+          <h2>Works Order</h2>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td style="width: 50%;" class="td-class">
+          <h4 style="margin: 0;">The Contractor</h4>
+          <p class="para-text">{{CONTRACTOR}}</p>
+        </td>
+        <td style="width: 50%;" class="td-class">
+          <h4 style="margin: 0;">Date Issued</h4>
+          <p class="para-text">{{DATE_ISSUED}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%;" class="td-class">
+          <h4 style="margin: 0;">Execute Work at / Supply Goods To:</h4>
+          <p class="para-text">{{PROPERTY_ADDRESS}}</p>
+        </td>
+        <td style="width: 50%;" class="td-class">
+          <h4 style="margin: 0;">Landlord Name and Address for Invoice:</h4>
+          <p class="para-text">{{LANDLORD}}</p>
+          <p class="para-text">{{LANDLORD_ADDRESS}}</p>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td style="width: 100%;" class="td-class">
+          <h4 style="margin: 0;">Brief Description of Problem as Reported:</h4>
+          <p class="para-text">{{DESCRIPTION}}</p>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td style="width: 100%;" class="td-class">
+          <h4 style="margin: 0;">Tenant Details</h4>
+        </td>
+      </tr>
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td style="width: 33.33%;" class="td-class">
+          <h4 style="margin: 0;">Name</h4>
+        </td>
+        <td style="width: 33.33%;" class="td-class">
+          <h4 style="margin: 0;">Phone Number</h4>
+        </td>
+        <td style="width: 33.33%;" class="td-class">
+          <h4 style="margin: 0;">Preferred Contact</h4>
+        </td>
+      </tr>
+      {{TENANTS}}
+    </table>
+    <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+      <tr>
+        <td style="width: 100%;" class="td-class">
+          <h4 style="margin: 0;">Priority Level: {{PRIORITY}}</h4>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 100%;" class="td-class">
+          <h4 style="margin: 0;">If you have any queries please contact:</h4>
+          <p class="para-text">{{STAFF_DETAILS}}</p>
+        </td>
+      </tr>
+    </table>
+</page>
+<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
+  <table style="border: none; text-align:left; width:100%; padding:0px; margin: 0px;">
+    <tr class="text-center">
+      <td style="width: 100%;">
+        <h2>{{TERMS_TITLE}}</h2>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%;">
+        {{TERMS_CONDITIONS}}
+      </td>
+    </tr>
+  </table>
+</page>
