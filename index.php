@@ -1,7 +1,10 @@
 <?php
 
+
 require_once("vendor/autoload.php");
 require_once("includes/initialize.php");
+
+
 
 ?>
 
@@ -17,11 +20,15 @@ require_once("includes/initialize.php");
 	<?php
 	include("includes/template/header.php");
 
-    $layouturl = explode('/',$rewriteData['url']);
+    $layout_source_url = isset($rewriteData['url']) ? $rewriteData['url'] : $url;
+    $layouturl = explode('/',$layout_source_url);
     $countpieces = (count($layouturl) - 1);
     $layoutfile = '/'.str_replace('/','-',$layouturl[$countpieces]).'.php';
 
-    if ($rewriteData['table_name'] == 'product') {
+    if ($url == '/search') {
+        include('includes/layout/search.php');
+    }
+    elseif ($rewriteData['table_name'] == 'product') {
         include('includes/layout/product-page.php');
     }
     elseif($rewriteData['table_name'] == 'category') {

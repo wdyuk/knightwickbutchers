@@ -7,7 +7,9 @@
 	require 'functions/strings.php';
 	require 'functions/date.php';
 	require 'functions/images.php';
+	require 'functions/homepage_popup.php';
 	require 'functions/mail.php';
+	require 'functions/search.php';
 	require 'functions/upload.php';
 	require 'functions/trees.php';
 	require 'functions/lists.php';

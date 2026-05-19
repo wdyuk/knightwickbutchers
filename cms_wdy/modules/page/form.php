@@ -90,6 +90,20 @@
 
         }
 
+        if(isset($_FILES['about-image']) && !empty($_FILES['about-image']['tmp_name'])) {
+
+            $imgData = pathinfo($_FILES['about-image']['name']);
+            $about_image = new AdvancedSimpleImage();
+            $about_image->fromFile($_FILES['about-image']['tmp_name']);
+
+            if ($about_image->getWidth() > 900) {
+                $about_image->resize(900);
+            }
+
+            $about_image->toFile(UPLOADS_DIR . 'page/' .$table_id . '-about-image.' . $imgData['extension']);
+
+        }
+
 
         if(isset($_POST['delete-image'])){
 
@@ -244,6 +258,29 @@
    
             <?php endif; 
         endif; ?>
+        <div class="row">
+            <div class="col-md-12">
+                <label for="about-image">Homepage About Us Image:</label>
+                <input class="form-control" name="about-image" id="about-image" size="100" type="file" />
+                <small class="form-text text-muted">Used by the About Us section on the homepage.</small>
+            </div>
+        </div>
+        <?php
+        if(isset($data['id'])) :
+
+            $path = get_image('page/' . $data['id'] . '-about-image');
+
+            if (strlen($path) > 0):
+                ?>
+                 <div class="row">
+                    <div class="col-md-12">
+                        <?php show_image('page/' . $data['id'] . '-about-image'); ?>
+                        <label><input class="form-control" type="checkbox" name="delete[]" value="<?php echo $path; ?>" />&nbsp;Delete</label>
+                    </div>
+                </div>
+
+            <?php endif; 
+        endif; ?>
                 
         <div class="form-group">
             <label for="links">Show Link:</label>
@@ -381,7 +418,7 @@ $(function() {
         }
 		$('#url').val(url);
 	});
-	 var bannerCount = <?php echo $bannerCount; ?>;
+	 var bannerCount = <?php echo isset($bannerCount) ? $bannerCount : 0; ?>;
         
         $('#add-banners').click(function(){
             $('#photo-container').append('<input type="file" class="form-control" name="photo[' + bannerCount + ']" /><input type="text" class="form-control" name="links[' + bannerCount + ']" placeholder="Link" /><br />');

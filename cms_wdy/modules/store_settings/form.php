@@ -20,6 +20,7 @@
         }
         
         table_update('store_settings', $fields, $_POST, 'id=1');
+
         $messages[] = 'Saved successfully.';
 
     }

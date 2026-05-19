@@ -448,6 +448,21 @@ a.operation-notes:hover {
   	content: "\f109";
   	color: #558;
 }
+.operation-pdf:before {
+	left:0px;
+    position:absolute;
+    top:0;
+    font-family: "Font Awesome 5 Free";
+  	font-weight: 900;
+  	content: "\f1c1";
+  	color: #c62828;
+}
+.order-pdf-button {
+  white-space: nowrap;
+}
+.order-pdf-button i {
+  margin-right: 6px;
+}
 .operation-status-1 {
 	left:0px;
     position:absolute;
@@ -968,6 +983,10 @@ tr.fulfilled.placed-for-collection, tr.fulfilled.placed-for-collection td {
 }
 tr.shipped, tr.shipped td {
   background: #8833ff !important; color: #fff !important;
+}
+tr.shipped.card-authorised, tr.shipped.card-authorised td {
+  background: #FF13F0 !important;
+  color: #222 !important;
 }
 tr.shipped.placed-for-collection, tr.shipped.placed-for-collection td {
   background: #cc99ff !important; color: #222 !important;

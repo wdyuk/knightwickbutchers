@@ -243,12 +243,41 @@
 	<th>Payment Status</th>
     <th>Fulfillment/Shipping Status</th>
     <th>Del/Col Date</th>
+    <th>Download</th>
 </tr>
 </thead>
 <tbody class="cursor-move">
 <?php 
-	$operations = array('form','delete');
-	show_rows($rows, 'orders', array('id','email','created_at','updated_at','status','order_status','delivery_collection_date'), $operations);
+	foreach ($rows as $row) {
+        $id = (int) $row['id'];
+        $class = '';
+        if (isset($row['status'])) {
+            $class = strtolower(str_replace(' ', '-', $row['status']));
+        }
+        if (isset($row['order_status'])) {
+            $class .= ' '.strtolower(str_replace(' ', '-', $row['order_status']));
+        }
+        ?>
+        <tr class="<?= trim($class); ?>" table="orders" row_id="<?= $id; ?>">
+            <td valign="top">
+                <a href="?module=orders&amp;action=form&amp;id=<?= $id; ?>" class="operation-form operation" value="<?= $id; ?>"></a>
+                <a href="?module=orders&amp;action=delete&amp;id=<?= $id; ?>" class="operation-delete operation" value="<?= $id; ?>"></a>
+            </td>
+            <td valign="top"><?= htmlentities($row['id']); ?></td>
+            <td valign="top"><?= htmlentities($row['email']); ?></td>
+            <td valign="top"><?= htmlentities($row['created_at']); ?></td>
+            <td valign="top"><?= htmlentities($row['updated_at']); ?></td>
+            <td valign="top"><?= htmlentities($row['status']); ?></td>
+            <td valign="top"><?= htmlentities($row['order_status']); ?></td>
+            <td valign="top"><?= htmlentities($row['delivery_collection_date']); ?></td>
+            <td valign="top">
+                <a href="ajax/generate-order-pdf.php?id=<?= $id; ?>" class="btn btn-sm btn-danger order-pdf-button" target="_blank" rel="noopener noreferrer" title="Generate PDF">
+                    <i class="fas fa-file-pdf"></i> Generate
+                </a>
+            </td>
+        </tr>
+        <?php
+    }
 ?>
 </tbody>
 <tfoot>

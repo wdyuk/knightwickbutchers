@@ -48,6 +48,8 @@
         die('Store settings have not been declared.  Please set these up in the admin area to remove this message.');
     }
     $params = $_POST;
+    $searchQuery = isset($_GET['q']) ? trim($_GET['q']) : '';
+    $searchResults = array();
 
     if ($_SERVER['REMOTE_ADDR'] == '86.185.64.125') {
         echo '<pre>'.print_r( $params, true).'</pre>';
@@ -196,6 +198,12 @@
         else {
             header('Location: /');
         }
+    }
+    else if ($url == '/search')
+    {
+        $pageData['title'] = 'Search';
+        $pageData['h1_title'] = 'Search';
+        $searchResults = search_site($searchQuery, $store_settings);
     }
 
 

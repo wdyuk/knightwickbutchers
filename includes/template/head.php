@@ -25,6 +25,7 @@
     <![endif]-->
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://kit.fontawesome.com/79aebbd0ae.js" crossorigin="anonymous"></script>
     <script src="/js/scripts.min.js"></script>
     <script src="/js/custom.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->

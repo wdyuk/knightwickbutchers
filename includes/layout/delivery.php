@@ -2,8 +2,26 @@
 
 	$_SESSION['guest'] = array_map("sanitize_sql_string",$_POST);
 	$accountData = $_SESSION['guest'];
+    $preferredDateLabel = (!empty($accountData['collect']) && (int) $accountData['collect'] === 1) ? 'Collection Date' : 'Shipping Date';
+    $preferredDateMin = get_preferred_fulfilment_min_date();
+    $preferredDateValue = isset($accountData['delivery_collection_date']) ? $accountData['delivery_collection_date'] : '';
+    $preferredDateDisplay = preferred_fulfilment_date_display($preferredDateValue);
+    $collectionText = str_replace('Please state your collection date on the next page.', '', $store_settings['company_collect_text']);
 
 ?>
+<link rel="stylesheet" href="/cms_wdy/resources/js/lib/jquery-ui/jquery-ui.min.css">
+<style>
+    .preferred-date-field label {
+        display: block;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 8px;
+    }
+
+    .preferred-date-note {
+        margin-bottom: 16px;
+    }
+</style>
 <section class="probootstrap-section pt-6 pb-6 dark-background hidden-xs">
   <div class="row">
       <div class="col-xs-12 pt-3 pb-3">
@@ -18,6 +36,9 @@
             <p>Once you have placed your order with us a member of the team will contact you to arrange a suitable delivery date and time.</p>
             <?= $pageData['content']; ?>
             <?= $pageData['content_2']; ?>
+            <?php if (isset($deliveryDateError) && strlen($deliveryDateError) > 0): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($deliveryDateError, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
             <?php 
 
 				if ($pre_auth_required) { ?>
@@ -41,6 +62,20 @@
 			<form method="POST" action="/checkout?payment">
 				
 				<div class="row">
+                    <div class="col-sm-12 contact-form-fields mb-4 preferred-date-field">
+                        <label for="preferred_fulfilment_date" id="preferred-fulfilment-label"><?= $preferredDateLabel; ?> *</label>
+                        <input
+                            type="text"
+                            name="delivery_collection_date"
+                            id="delivery_collection_date"
+                            value="<?= htmlspecialchars($preferredDateDisplay, ENT_QUOTES, 'UTF-8'); ?>"
+                            class="form-control-contact"
+                            placeholder="Select a date"
+                            autocomplete="off"
+                            required
+                        >
+                        <p class="preferred-date-note"><em>We do not allow Sunday or Monday selections. Same-day is not available, and next-day selection is only available before 8pm.</em></p>
+                    </div>
 					<div class="col-md-5 col-sm-12 deliver-side">
 						<h2>Delivery</h2>
 						<p class="shipping-address mb-1">Click the checkbox below if your shipping address is the same as your billing address </p>
@@ -80,7 +115,7 @@
 						<h2>Collection</h2>
 						<p class="collect-order mb-1">Click the checkbox below if you would prefer to collect your order from us.</p>
 						<p class="mb-2"><input type="checkbox" name="collect-order" class="form-control checkbox" id="collect-order" value="1" style="display: inline-block;"></p>
-						<p class="collect-order mb-1 text-left"><?= $store_settings['company_collect_text']; ?></strong></p>
+						<p class="collect-order mb-1 text-left"><?= $collectionText; ?></strong></p>
 						
 						<p><?= $store_settings['company_collect_address']; ?></p>
 						<?= $store_settings['embed_collection_map']; ?>
@@ -109,6 +144,7 @@
 	  </div>
 	</div>
 </section>
+    <script src="/cms_wdy/resources/js/lib/jquery-ui/jquery-ui.min.js"></script>
 	<script>
 		var formFields = $('.contact-form-fields');
   
@@ -132,6 +168,32 @@
 		    })
 		 });
 		$(function() {
+            var preferredDateInput = $('#delivery_collection_date');
+            var preferredDateLabel = $('#preferred-fulfilment-label');
+            var minDate = new Date('<?= $preferredDateMin->format('Y-m-d'); ?>T00:00:00');
+
+            preferredDateInput.datepicker({
+                dateFormat: 'dd/mm/yy',
+                minDate: minDate,
+                beforeShowDay: function(date) {
+                    var day = date.getDay();
+                    var normalized = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+                    if (day === 0 || day === 1) {
+                        return [false, '', 'Unavailable'];
+                    }
+
+                    if (normalized < minDate) {
+                        return [false, '', 'Unavailable'];
+                    }
+
+                    return [true, '', 'Available'];
+                }
+            });
+
+            if (preferredDateInput.val().length > 0) {
+                preferredDateInput.datepicker('setDate', preferredDateInput.val());
+            }
 			
 			$('.check-map').on( 'click', function(e) {
 				e.preventDefault();
@@ -189,18 +251,22 @@
 			$('#collect-order').change( function() {
 				if ($(this).prop('checked')) {
 					$('.required-field').removeAttr('required');
-					$('input[type="text"]').attr('disabled',true);
-					$('.deliver-side').hide(200);
+                    $('input[type="text"]').attr('disabled',true);
+                    preferredDateInput.attr('disabled', false);
+                    $('.deliver-side').hide(200);
 					$('.middle-or').hide(200);
 					$('#collect-value').val(1);
 					$('#proceed-submit').val('Proceed to Confirm Order');
+                    preferredDateLabel.text('Collection Date *');
 				} else {
 					$('.required-field').attr('required',true);
 					$('input[type="text"]').attr('disabled',false);
+                    preferredDateInput.attr('disabled', false);
 					$('.deliver-side').show(200);
 					$('.middle-or').show(200);
 					$('#collect-value').val(0);
 					$('#proceed-submit').val('Proceed to Payment');
+                    preferredDateLabel.text('Shipping Date *');
 
 				}
 			});

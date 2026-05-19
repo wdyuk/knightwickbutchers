@@ -313,6 +313,89 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	    }
 	    return $randomString;
 	}
+    function get_preferred_fulfilment_min_date($reference = null) {
+        $timezone = new DateTimeZone(date_default_timezone_get());
+
+        if ($reference instanceof DateTimeInterface) {
+            $now = DateTimeImmutable::createFromInterface($reference)->setTimezone($timezone);
+        } elseif (!empty($reference)) {
+            $now = new DateTimeImmutable($reference, $timezone);
+        } else {
+            $now = new DateTimeImmutable('now', $timezone);
+        }
+
+        $beforeCutoff = ((int) $now->format('Hi') < 2000);
+        $candidate = $now->setTime(0, 0, 0);
+        $candidate = $candidate->modify($beforeCutoff ? '+1 day' : '+2 days');
+
+        while (in_array((int) $candidate->format('w'), array(0, 1), true)) {
+            $candidate = $candidate->modify('+1 day');
+        }
+
+        return $candidate;
+    }
+
+    function preferred_fulfilment_date_is_valid($date, $reference = null) {
+        $normalizedDate = preferred_fulfilment_date_normalize($date);
+
+        if ($normalizedDate === false) {
+            return false;
+        }
+
+        $date = $normalizedDate;
+
+        $timezone = new DateTimeZone(date_default_timezone_get());
+        $selected = DateTimeImmutable::createFromFormat('Y-m-d', trim($date), $timezone);
+
+        if (!$selected || $selected->format('Y-m-d') !== trim($date)) {
+            return false;
+        }
+
+        if (in_array((int) $selected->format('w'), array(0, 1), true)) {
+            return false;
+        }
+
+        $minDate = get_preferred_fulfilment_min_date($reference);
+
+        return $selected >= $minDate->setTime(0, 0, 0);
+    }
+    function preferred_fulfilment_date_normalize($date) {
+        if (!is_string($date) || trim($date) === '') {
+            return false;
+        }
+
+        $date = trim($date);
+        $timezone = new DateTimeZone(date_default_timezone_get());
+        $selected = DateTimeImmutable::createFromFormat('Y-m-d', $date, $timezone);
+
+        if ($selected && $selected->format('Y-m-d') === $date) {
+            return $selected->format('Y-m-d');
+        }
+
+        $selected = DateTimeImmutable::createFromFormat('d/m/Y', $date, $timezone);
+
+        if ($selected && $selected->format('d/m/Y') === $date) {
+            return $selected->format('Y-m-d');
+        }
+
+        return false;
+    }
+    function preferred_fulfilment_date_display($date) {
+        $normalizedDate = preferred_fulfilment_date_normalize($date);
+
+        if ($normalizedDate === false) {
+            return '';
+        }
+
+        $timezone = new DateTimeZone(date_default_timezone_get());
+        $selected = DateTimeImmutable::createFromFormat('Y-m-d', $normalizedDate, $timezone);
+
+        if (!$selected || $selected->format('Y-m-d') !== $normalizedDate) {
+            return false;
+        }
+
+        return $selected->format('d/m/Y');
+    }
 	function get_delivery_cost($miles, $cart_total) {
         global $store_settings;
         //Delivery Zone 1 if set

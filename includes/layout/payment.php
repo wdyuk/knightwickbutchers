@@ -3,6 +3,9 @@ error_reporting(E_ALL);
 ini_set('display_errors','1');
 $shippingdetails = array_map("sanitize_sql_string",$_POST);
 $message = array();
+$preferredFulfilmentDate = isset($shippingdetails['delivery_collection_date']) ? trim($shippingdetails['delivery_collection_date']) : '';
+$preferredFulfilmentDate = preferred_fulfilment_date_normalize($preferredFulfilmentDate);
+$preferredFulfilmentDateDisplay = preferred_fulfilment_date_display($preferredFulfilmentDate);
 
 if(isset($_POST['collect']) && $_POST['collect'] == 1){
     $collection = 1;
@@ -13,6 +16,12 @@ if(isset($_POST['collect']) && $_POST['collect'] == 1){
 $accountData = $_SESSION['guest'];
 
 $accountData = array_merge($accountData, $shippingdetails);
+
+if (!preferred_fulfilment_date_is_valid($preferredFulfilmentDate)) {
+    $deliveryDateError = 'Please choose a valid collection or shipping date.';
+    include('includes/layout/delivery.php');
+    return;
+}
 
 $cartData = $cartItems;
 $Carttotal = 0;
@@ -100,6 +109,7 @@ $fields = array(
     'shipping_address_line_2',
     'shipping_town',
     'shipping_postcode',
+    'delivery_collection_date',
     'shipping_option_id',
     'shipping_total',
     'subtotal',
@@ -130,6 +140,7 @@ $values = array(
                 'shipping_address_line_2' => $accountData['shipping_address_line_2'],
                 'shipping_town' => $accountData['shipping_town'],
                 'shipping_postcode' => $accountData['shipping_postcode'],
+                'delivery_collection_date' => $preferredFulfilmentDate,
                 'shipping_option_id' => $collection,
                 'shipping_total' => $deliverycost,
                 'subtotal' => $Carttotal,
@@ -354,9 +365,16 @@ $Carttotal = 0;
                         <th class="table-headers">Post Code</th>
                         <td><?= $accountData['shipping_postcode'] ;?></td>
                     </tr>
+                    <tr>
+                        <th class="table-headers">Shipping Date</th>
+                        <td><?= htmlspecialchars($preferredFulfilmentDateDisplay, ENT_QUOTES, 'UTF-8'); ?></td>
+                        <th class="table-headers"></th>
+                        <td></td>
+                    </tr>
                 </table>
                 <?php } else { ?>
                     <p>Customer is collecting from <?= $store_settings['company_collect_address']; ?></p>
+                    <p><strong>Collection Date:</strong> <?= htmlspecialchars($preferredFulfilmentDateDisplay, ENT_QUOTES, 'UTF-8'); ?></p>
                 <?php } ?>
             </div>
         </div>
@@ -366,7 +384,7 @@ $Carttotal = 0;
             <div class="row">
             <div class="col-xs-12 col-md-6" style="margin-top: 15px;">
                 <h3>Any Order Comments?</h3>
-                <p>(Request preferred delivery date etc)</p>
+                <p>(Any delivery notes for the order)</p>
                 <textarea class="form-control" rows="10" style="resize: none;" id="customer_comments" name="customer_comments"></textarea>
             </div>
             <div class="col-xs-12 col-md-6" style="margin-top: 15px;">
@@ -397,7 +415,7 @@ $Carttotal = 0;
                 <div class="row">
                 <div class="col-xs-12 col-md-6" style="margin-top: 15px;">
                     <h3>Any Order Comments?</h3>
-                    <p>(Request preferred delivery date etc)</p>
+                    <p>(Any delivery notes for the order)</p>
                     <textarea class="form-control" rows="10" style="resize: none;" id="customer_comments" name="customer_comments"></textarea>
                 </div>
             <div class="col-xs-12 col-md-6" style="margin-top: 15px;">
@@ -444,7 +462,7 @@ $Carttotal = 0;
             <form method="POST" id="Confirm" action="/processor/process-collection.php">
             <div class="col-xs-12 col-md-6" style="margin-top: 15px;">
                 <h3>Any Order Comments?</h3>
-                <p>(Request preferred collection date etc)</p>
+                <p>(Any collection notes for the order)</p>
                 <textarea class="form-control" rows="10" style="resize: none;" id="customer_comments" name="customer_comments"></textarea>
             </div>
             <div class="col-xs-12 col-md-6" style="margin-top: 15px;">

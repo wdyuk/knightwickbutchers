@@ -1,6 +1,13 @@
 {
+    "config": {
+        "platform": {
+            "php": "7.4.33"
+        },
+        "sort-packages": true
+    },
     "require": {
         "mike182uk/cart": "^3.0",
+        "mpdf/mpdf": "^8.2",
         "stripe/stripe-php": "^7.52"
     }
 }

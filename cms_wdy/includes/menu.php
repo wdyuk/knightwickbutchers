@@ -54,6 +54,18 @@ $menu = array (
     ),
   ),
   array (
+    'module' => 'homepage_popup',
+    'title' => 'Homepage Popup',
+    'submenu' =>
+    array (
+      0 =>
+      array (
+        'action' => 'form',
+        'title' => 'Manage',
+      ),
+    ),
+  ),
+  array (
     'module' => 'categories',
     'title' => 'Categories',
     'submenu' => 
