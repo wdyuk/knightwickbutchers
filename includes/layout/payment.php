@@ -13,11 +13,12 @@ if(isset($_POST['collect']) && $_POST['collect'] == 1){
 } else {
     $collection = 0;
 }
+$fulfilmentType = ($collection === 1) ? 'collection' : 'delivery';
 $accountData = $_SESSION['guest'];
 
 $accountData = array_merge($accountData, $shippingdetails);
 
-if (!preferred_fulfilment_date_is_valid($preferredFulfilmentDate)) {
+if (!preferred_fulfilment_date_is_valid($preferredFulfilmentDate, null, $fulfilmentType)) {
     $deliveryDateError = 'Please choose a valid collection or shipping date.';
     include('includes/layout/delivery.php');
     return;

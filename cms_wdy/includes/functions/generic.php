@@ -313,6 +313,9 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	    }
 	    return $randomString;
 	}
+    function get_preferred_fulfilment_max_date($reference = null) {
+        return get_preferred_fulfilment_min_date($reference)->modify('+8 weeks');
+    }
     function get_preferred_fulfilment_min_date($reference = null) {
         $timezone = new DateTimeZone(date_default_timezone_get());
 
@@ -335,7 +338,7 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
         return $candidate;
     }
 
-    function preferred_fulfilment_date_is_valid($date, $reference = null) {
+    function preferred_fulfilment_date_is_valid($date, $reference = null, $fulfilmentType = 'delivery') {
         $normalizedDate = preferred_fulfilment_date_normalize($date);
 
         if ($normalizedDate === false) {
@@ -356,8 +359,17 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
         }
 
         $minDate = get_preferred_fulfilment_min_date($reference);
+        $maxDate = get_preferred_fulfilment_max_date($reference);
 
-        return $selected >= $minDate->setTime(0, 0, 0);
+        if ($selected < $minDate->setTime(0, 0, 0) || $selected > $maxDate->setTime(0, 0, 0)) {
+            return false;
+        }
+
+        if (blocked_fulfilment_date_is_blocked($normalizedDate, $fulfilmentType)) {
+            return false;
+        }
+
+        return true;
     }
     function preferred_fulfilment_date_normalize($date) {
         if (!is_string($date) || trim($date) === '') {

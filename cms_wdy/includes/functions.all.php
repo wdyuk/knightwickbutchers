@@ -7,6 +7,7 @@
 	require 'functions/strings.php';
 	require 'functions/date.php';
 	require 'functions/images.php';
+	require 'functions/blocked_fulfilment_dates.php';
 	require 'functions/homepage_popup.php';
 	require 'functions/mail.php';
 	require 'functions/search.php';

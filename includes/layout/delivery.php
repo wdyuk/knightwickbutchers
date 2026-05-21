@@ -4,13 +4,19 @@
 	$accountData = $_SESSION['guest'];
     $preferredDateLabel = (!empty($accountData['collect']) && (int) $accountData['collect'] === 1) ? 'Collection Date' : 'Shipping Date';
     $preferredDateMin = get_preferred_fulfilment_min_date();
+    $preferredDateMax = get_preferred_fulfilment_max_date();
     $preferredDateValue = isset($accountData['delivery_collection_date']) ? $accountData['delivery_collection_date'] : '';
     $preferredDateDisplay = preferred_fulfilment_date_display($preferredDateValue);
     $collectionText = str_replace('Please state your collection date on the next page.', '', $store_settings['company_collect_text']);
+    $blockedFulfilmentDates = blocked_fulfilment_dates_get_map();
 
 ?>
 <link rel="stylesheet" href="/cms_wdy/resources/js/lib/jquery-ui/jquery-ui.min.css">
 <style>
+    .preferred-date-field {
+        display: none;
+    }
+
     .preferred-date-field label {
         display: block;
         font-weight: 700;
@@ -21,6 +27,7 @@
     .preferred-date-note {
         margin-bottom: 16px;
     }
+
 </style>
 <section class="probootstrap-section pt-6 pb-6 dark-background hidden-xs">
   <div class="row">
@@ -60,9 +67,8 @@
         <div class="col-12 probootstrap-animate">	
 					
 			<form method="POST" action="/checkout?payment">
-				
 				<div class="row">
-                    <div class="col-sm-12 contact-form-fields mb-4 preferred-date-field">
+                    <div class="col-sm-12 contact-form-fields mb-4 preferred-date-field" id="preferred-date-field-wrapper">
                         <label for="preferred_fulfilment_date" id="preferred-fulfilment-label"><?= $preferredDateLabel; ?> *</label>
                         <input
                             type="text"
@@ -103,6 +109,7 @@
 							</div> -->
 							
 						</div>
+                        <div id="delivery-date-placeholder"></div>
 						<p class="mb-2"><em>Please make sure that your delivery address falls within our delivery areas, otherwise we may not be able to deliver your order.</em></p>
 						<p class="mb-2">Hover over or press the map below to zoom in.</p>
 						<div class="text-center"><img src="/assets/theme/img/delivery.jpg" id="delivery-zoom" style="width: 300px; height: auto;" class="section-image" data-zoom-image="/assets/theme/img/delivery-large.jpg"/></div>
@@ -115,6 +122,7 @@
 						<h2>Collection</h2>
 						<p class="collect-order mb-1">Click the checkbox below if you would prefer to collect your order from us.</p>
 						<p class="mb-2"><input type="checkbox" name="collect-order" class="form-control checkbox" id="collect-order" value="1" style="display: inline-block;"></p>
+                        <div id="collection-date-placeholder"></div>
 						<p class="collect-order mb-1 text-left"><?= $collectionText; ?></strong></p>
 						
 						<p><?= $store_settings['company_collect_address']; ?></p>
@@ -170,20 +178,55 @@
 		$(function() {
             var preferredDateInput = $('#delivery_collection_date');
             var preferredDateLabel = $('#preferred-fulfilment-label');
+            var preferredDateField = $('#preferred-date-field-wrapper');
+            var deliveryDatePlaceholder = $('#delivery-date-placeholder');
+            var collectionDatePlaceholder = $('#collection-date-placeholder');
             var minDate = new Date('<?= $preferredDateMin->format('Y-m-d'); ?>T00:00:00');
+            var maxDate = new Date('<?= $preferredDateMax->format('Y-m-d'); ?>T00:00:00');
+            var blockedDates = <?= json_encode($blockedFulfilmentDates); ?>;
+
+            function toIsoDate(date) {
+                var month = String(date.getMonth() + 1).padStart(2, '0');
+                var day = String(date.getDate()).padStart(2, '0');
+                return date.getFullYear() + '-' + month + '-' + day;
+            }
+
+            function isBlockedDate(date, fulfilmentType) {
+                var isoDate = toIsoDate(date);
+
+                if (blockedDates.both && blockedDates.both.indexOf(isoDate) > -1) {
+                    return true;
+                }
+
+                if (blockedDates[fulfilmentType] && blockedDates[fulfilmentType].indexOf(isoDate) > -1) {
+                    return true;
+                }
+
+                return false;
+            }
 
             preferredDateInput.datepicker({
                 dateFormat: 'dd/mm/yy',
                 minDate: minDate,
+                maxDate: maxDate,
                 beforeShowDay: function(date) {
                     var day = date.getDay();
                     var normalized = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    var fulfilmentType = $('#collect-order').prop('checked') ? 'collection' : 'delivery';
 
                     if (day === 0 || day === 1) {
                         return [false, '', 'Unavailable'];
                     }
 
                     if (normalized < minDate) {
+                        return [false, '', 'Unavailable'];
+                    }
+
+                    if (normalized > maxDate) {
+                        return [false, '', 'Unavailable'];
+                    }
+
+                    if (isBlockedDate(normalized, fulfilmentType)) {
                         return [false, '', 'Unavailable'];
                     }
 
@@ -199,6 +242,28 @@
 				e.preventDefault();
 				$('.delivery-radius-map').show();
 			});
+            function updatePreferredDateField() {
+                var isCollection = $('#collect-order').prop('checked');
+                var hasDeliveryAddress = $.trim($('#shipping_address_line_1').val()).length > 0;
+                var useBillingAddress = $('#same-address').prop('checked');
+
+                if (isCollection) {
+                    preferredDateField.appendTo(collectionDatePlaceholder).show();
+                    preferredDateLabel.text('Collection Date *');
+                    preferredDateInput.datepicker('refresh');
+                    return;
+                }
+
+                preferredDateLabel.text('Shipping Date *');
+
+                if (useBillingAddress || hasDeliveryAddress) {
+                    preferredDateField.appendTo(deliveryDatePlaceholder).show();
+                } else {
+                    preferredDateField.hide();
+                }
+
+                preferredDateInput.datepicker('refresh');
+            }
 			$('#same-address').change( function() {
 				if ($(this).prop('checked')) {
 					$('#shipping_address_line_1').val('<?= $accountData['address_line_1'] ;?>');
@@ -247,6 +312,7 @@
 					    
 					 });
 				}
+                updatePreferredDateField();
 			})
 			$('#collect-order').change( function() {
 				if ($(this).prop('checked')) {
@@ -257,7 +323,6 @@
 					$('.middle-or').hide(200);
 					$('#collect-value').val(1);
 					$('#proceed-submit').val('Proceed to Confirm Order');
-                    preferredDateLabel.text('Collection Date *');
 				} else {
 					$('.required-field').attr('required',true);
 					$('input[type="text"]').attr('disabled',false);
@@ -266,10 +331,12 @@
 					$('.middle-or').show(200);
 					$('#collect-value').val(0);
 					$('#proceed-submit').val('Proceed to Payment');
-                    preferredDateLabel.text('Shipping Date *');
 
 				}
+                updatePreferredDateField();
 			});
+            $('#shipping_address_line_1').on('input change', updatePreferredDateField);
+            updatePreferredDateField();
 			/*$('#get-button').click(function() {
 
             var txt = $('#shipping_postcode').val();

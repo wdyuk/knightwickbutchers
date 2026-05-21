@@ -66,6 +66,18 @@ $menu = array (
     ),
   ),
   array (
+    'module' => 'blocked_fulfilment_dates',
+    'title' => 'Blocked Dates',
+    'submenu' =>
+    array (
+      0 =>
+      array (
+        'action' => 'form',
+        'title' => 'Manage',
+      ),
+    ),
+  ),
+  array (
     'module' => 'categories',
     'title' => 'Categories',
     'submenu' => 
