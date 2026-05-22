@@ -80,7 +80,7 @@
                             autocomplete="off"
                             required
                         >
-                        <p class="preferred-date-note"><em>We do not allow Sunday or Monday selections. Same-day is not available, and next-day selection is only available before 8pm.</em></p>
+                        <p class="preferred-date-note"><em>We are not open for collections or deliveries on Sunday and Monday. Same day collection is not available online, please phone 01886 821585 if you would like to collect today. Please order by 8pm for next day delivery/collection.</em></p>
                     </div>
 					<div class="col-md-5 col-sm-12 deliver-side">
 						<h2>Delivery</h2>
@@ -107,13 +107,11 @@
 					    			<option value="3">Ireland & Northern Ireland</option>
 					    			<option value="4">Rest of the World</option>
 							</div> -->
-							
 						</div>
                         <div id="delivery-date-placeholder"></div>
-						<p class="mb-2"><em>Please make sure that your delivery address falls within our delivery areas, otherwise we may not be able to deliver your order.</em></p>
+						<!--<p class="mb-2"><em>Please make sure that your delivery address falls within our delivery areas, otherwise we may not be able to deliver your order.</em></p>-->
 						<p class="mb-2">Hover over or press the map below to zoom in.</p>
 						<div class="text-center"><img src="/assets/theme/img/delivery.jpg" id="delivery-zoom" style="width: 300px; height: auto;" class="section-image" data-zoom-image="/assets/theme/img/delivery-large.jpg"/></div>
-						
 					</div>
 					<div class="col-md-2 col-sm-12 middle-or">
 						<h2>OR</h2>
