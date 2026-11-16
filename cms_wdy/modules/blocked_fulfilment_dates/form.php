@@ -3,6 +3,7 @@
 $messages = array();
 $errors = array();
 $dateTypes = blocked_fulfilment_date_types();
+$overrideStatuses = fulfilment_date_override_statuses();
 
 if (isset($_POST['save'])) {
     if (!blocked_fulfilment_dates_table_exists()) {
@@ -10,13 +11,18 @@ if (isset($_POST['save'])) {
     } else {
         $blockedDate = isset($_POST['blocked_date']) ? preferred_fulfilment_date_normalize($_POST['blocked_date']) : false;
         $fulfilmentType = isset($_POST['fulfilment_type']) ? strtolower(trim($_POST['fulfilment_type'])) : '';
+        $availabilityStatus = isset($_POST['availability_status']) ? strtolower(trim($_POST['availability_status'])) : '';
 
         if ($blockedDate === false) {
             $errors[] = 'Please choose a valid date.';
         }
 
         if (!isset($dateTypes[$fulfilmentType])) {
-            $errors[] = 'Please choose a valid blocked date type.';
+            $errors[] = 'Please choose a valid fulfilment type.';
+        }
+
+        if (!isset($overrideStatuses[$availabilityStatus])) {
+            $errors[] = 'Please choose whether the date is blocked or available.';
         }
 
         if (empty($errors)) {
@@ -26,18 +32,19 @@ if (isset($_POST['save'])) {
             );
 
             if ($existing) {
-                $errors[] = 'That date is already blocked for the selected type.';
+                $errors[] = 'That date already has an override for the selected type.';
             } else {
                 table_insert(
                     blocked_fulfilment_dates_table_name(),
-                    array('blocked_date', 'fulfilment_type', 'created_at'),
+                    array('blocked_date', 'fulfilment_type', 'availability_status', 'created_at'),
                     array(
                         'blocked_date' => $blockedDate,
                         'fulfilment_type' => $fulfilmentType,
+                        'availability_status' => $availabilityStatus,
                         'created_at' => date('Y-m-d H:i:s'),
                     )
                 );
-                $messages[] = 'Blocked date saved successfully.';
+                $messages[] = 'Date override saved successfully.';
             }
         }
     }
@@ -84,19 +91,19 @@ $blockedDates = blocked_fulfilment_dates_fetch_all();
 <form class="validate-form" method="post">
     <div class="card mb-4">
         <div class="card-header">
-            <h1>Manage Blocked Dates</h1>
+            <h1>Manage Date Availability</h1>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <label for="blocked_date">Blocked Date</label>
+                        <label for="blocked_date">Date</label>
                         <input class="form-control datepicker" name="blocked_date" id="blocked_date" type="text" value="<?php echo isset($_POST['blocked_date']) ? htmlspecialchars($_POST['blocked_date'], ENT_QUOTES, 'UTF-8') : ''; ?>" />
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <label for="fulfilment_type">Blocked For</label>
+                        <label for="fulfilment_type">Applies To</label>
                         <select class="form-control" name="fulfilment_type" id="fulfilment_type">
                             <?php foreach ($dateTypes as $typeValue => $typeLabel): ?>
                                 <option value="<?php echo $typeValue; ?>" <?php echo (isset($_POST['fulfilment_type']) && $_POST['fulfilment_type'] === $typeValue) ? 'selected="selected"' : ''; ?>><?php echo $typeLabel; ?></option>
@@ -104,24 +111,38 @@ $blockedDates = blocked_fulfilment_dates_fetch_all();
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <?php show_big_button('save', 'Add Blocked Date'); ?>
+                        <label for="availability_status">Availability</label>
+                        <select class="form-control" name="availability_status" id="availability_status">
+                            <?php foreach ($overrideStatuses as $statusValue => $statusLabel): ?>
+                                <option value="<?php echo $statusValue; ?>" <?php echo (isset($_POST['availability_status']) && $_POST['availability_status'] === $statusValue) ? 'selected="selected"' : ''; ?>><?php echo $statusLabel; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                        <?php show_big_button('save', 'Save Date Override'); ?>
                     </div>
                 </div>
             </div>
 
             <hr>
 
-            <h2>Saved Blocked Dates</h2>
+            <p class="mb-0">Sunday and Monday remain unavailable unless explicitly marked as available below. A blocked override always takes priority.</p>
+
+            <h2>Saved Date Overrides</h2>
             <?php if (empty($blockedDates)): ?>
-                <p>No blocked dates have been added yet.</p>
+                <p>No date overrides have been added yet.</p>
             <?php else: ?>
                 <div class="blocked-date-tags">
                     <?php foreach ($blockedDates as $blockedDate): ?>
                         <?php
                         $type = $blockedDate['fulfilment_type'];
                         $label = isset($dateTypes[$type]) ? $dateTypes[$type] : ucfirst($type);
+                        $status = isset($blockedDate['availability_status']) ? $blockedDate['availability_status'] : 'blocked';
+                        $statusLabel = isset($overrideStatuses[$status]) ? $overrideStatuses[$status] : ucfirst($status);
                         ?>
                         <label class="blocked-date-tag-item">
                             <input type="checkbox" name="delete_ids[]" value="<?php echo (int) $blockedDate['id']; ?>" />
@@ -129,6 +150,8 @@ $blockedDates = blocked_fulfilment_dates_fetch_all();
                                 <?php echo htmlspecialchars(preferred_fulfilment_date_display($blockedDate['blocked_date']), ENT_QUOTES, 'UTF-8'); ?>
                                 -
                                 <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
+                                -
+                                <?php echo htmlspecialchars($statusLabel, ENT_QUOTES, 'UTF-8'); ?>
                             </span>
                         </label>
                     <?php endforeach; ?>

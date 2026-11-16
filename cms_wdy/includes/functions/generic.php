@@ -331,10 +331,6 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
         $candidate = $now->setTime(0, 0, 0);
         $candidate = $candidate->modify($beforeCutoff ? '+1 day' : '+2 days');
 
-        while (in_array((int) $candidate->format('w'), array(0, 1), true)) {
-            $candidate = $candidate->modify('+1 day');
-        }
-
         return $candidate;
     }
 
@@ -354,7 +350,10 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
             return false;
         }
 
-        if (in_array((int) $selected->format('w'), array(0, 1), true)) {
+        if (
+            in_array((int) $selected->format('w'), array(0, 1), true)
+            && !fulfilment_date_is_explicitly_available($normalizedDate, $fulfilmentType)
+        ) {
             return false;
         }
 

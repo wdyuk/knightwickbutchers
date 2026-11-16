@@ -8,7 +8,7 @@
     $preferredDateValue = isset($accountData['delivery_collection_date']) ? $accountData['delivery_collection_date'] : '';
     $preferredDateDisplay = preferred_fulfilment_date_display($preferredDateValue);
     $collectionText = str_replace('Please state your collection date on the next page.', '', $store_settings['company_collect_text']);
-    $blockedFulfilmentDates = blocked_fulfilment_dates_get_map();
+    $fulfilmentDateOverrides = fulfilment_date_overrides_get_map();
 
 ?>
 <link rel="stylesheet" href="/cms_wdy/resources/js/lib/jquery-ui/jquery-ui.min.css">
@@ -80,7 +80,7 @@
                             autocomplete="off"
                             required
                         >
-                        <p class="preferred-date-note"><em>We are not open for collections or deliveries on Sunday and Monday. Same day collection is not available online, please phone 01886 821585 if you would like to collect today. Please order by 8pm for next day delivery/collection.</em></p>
+                        <p class="preferred-date-note"><em>We are normally not open for collections or deliveries on Sunday and Monday. Same day collection is not available online, please phone 01886 821585 if you would like to collect today. Please order by 8pm for next day delivery/collection.</em></p>
                     </div>
 					<div class="col-md-5 col-sm-12 deliver-side">
 						<h2>Delivery</h2>
@@ -181,7 +181,7 @@
             var collectionDatePlaceholder = $('#collection-date-placeholder');
             var minDate = new Date('<?= $preferredDateMin->format('Y-m-d'); ?>T00:00:00');
             var maxDate = new Date('<?= $preferredDateMax->format('Y-m-d'); ?>T00:00:00');
-            var blockedDates = <?= json_encode($blockedFulfilmentDates); ?>;
+            var dateOverrides = <?= json_encode($fulfilmentDateOverrides); ?>;
 
             function toIsoDate(date) {
                 var month = String(date.getMonth() + 1).padStart(2, '0');
@@ -191,6 +191,8 @@
 
             function isBlockedDate(date, fulfilmentType) {
                 var isoDate = toIsoDate(date);
+
+                var blockedDates = dateOverrides.blocked || {};
 
                 if (blockedDates.both && blockedDates.both.indexOf(isoDate) > -1) {
                     return true;
@@ -203,6 +205,14 @@
                 return false;
             }
 
+            function isExplicitlyAvailable(date, fulfilmentType) {
+                var isoDate = toIsoDate(date);
+                var availableDates = dateOverrides.available || {};
+
+                return (availableDates.both && availableDates.both.indexOf(isoDate) > -1)
+                    || (availableDates[fulfilmentType] && availableDates[fulfilmentType].indexOf(isoDate) > -1);
+            }
+
             preferredDateInput.datepicker({
                 dateFormat: 'dd/mm/yy',
                 minDate: minDate,
@@ -212,7 +222,7 @@
                     var normalized = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                     var fulfilmentType = $('#collect-order').prop('checked') ? 'collection' : 'delivery';
 
-                    if (day === 0 || day === 1) {
+                    if ((day === 0 || day === 1) && !isExplicitlyAvailable(normalized, fulfilmentType)) {
                         return [false, '', 'Unavailable'];
                     }
 

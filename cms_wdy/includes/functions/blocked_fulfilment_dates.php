@@ -35,6 +35,14 @@ function blocked_fulfilment_date_types()
     );
 }
 
+function fulfilment_date_override_statuses()
+{
+    return array(
+        'blocked' => 'Blocked',
+        'available' => 'Available',
+    );
+}
+
 function blocked_fulfilment_dates_fetch_all()
 {
     if (!blocked_fulfilment_dates_table_exists()) {
@@ -44,7 +52,7 @@ function blocked_fulfilment_dates_fetch_all()
     return table_fetch_rows(blocked_fulfilment_dates_table_name(), '', 'blocked_date ASC, fulfilment_type ASC');
 }
 
-function blocked_fulfilment_dates_get_map()
+function fulfilment_date_overrides_get_map()
 {
     static $map = null;
 
@@ -53,30 +61,50 @@ function blocked_fulfilment_dates_get_map()
     }
 
     $map = array(
-        'delivery' => array(),
-        'collection' => array(),
-        'both' => array(),
+        'blocked' => array('delivery' => array(), 'collection' => array(), 'both' => array()),
+        'available' => array('delivery' => array(), 'collection' => array(), 'both' => array()),
     );
 
     foreach (blocked_fulfilment_dates_fetch_all() as $row) {
-        if (!isset($map[$row['fulfilment_type']])) {
-            continue;
-        }
-
+        $type = isset($row['fulfilment_type']) ? $row['fulfilment_type'] : '';
+        $status = isset($row['availability_status']) ? $row['availability_status'] : 'blocked';
         $normalized = preferred_fulfilment_date_normalize($row['blocked_date']);
 
-        if ($normalized === false) {
+        if (!isset($map[$status][$type]) || $normalized === false) {
             continue;
         }
 
-        $map[$row['fulfilment_type']][] = $normalized;
+        $map[$status][$type][] = $normalized;
     }
 
-    foreach ($map as $type => $dates) {
-        $map[$type] = array_values(array_unique($dates));
+    foreach ($map as $status => $types) {
+        foreach ($types as $type => $dates) {
+            $map[$status][$type] = array_values(array_unique($dates));
+        }
     }
 
     return $map;
+}
+
+function blocked_fulfilment_dates_get_map()
+{
+    $overrides = fulfilment_date_overrides_get_map();
+    return $overrides['blocked'];
+}
+
+function fulfilment_date_is_explicitly_available($date, $fulfilmentType = 'delivery')
+{
+    $normalizedDate = preferred_fulfilment_date_normalize($date);
+
+    if ($normalizedDate === false) {
+        return false;
+    }
+
+    $fulfilmentType = strtolower(trim((string) $fulfilmentType));
+    $map = fulfilment_date_overrides_get_map()['available'];
+
+    return in_array($normalizedDate, $map['both'], true)
+        || (isset($map[$fulfilmentType]) && in_array($normalizedDate, $map[$fulfilmentType], true));
 }
 
 function blocked_fulfilment_date_is_blocked($date, $fulfilmentType = 'delivery')
