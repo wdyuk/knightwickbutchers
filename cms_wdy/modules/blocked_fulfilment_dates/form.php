@@ -150,7 +150,8 @@ $blockedDates = blocked_fulfilment_dates_fetch_all();
                                 <?php echo htmlspecialchars(preferred_fulfilment_date_display($blockedDate['blocked_date']), ENT_QUOTES, 'UTF-8'); ?>
                                 -
                                 <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
-                                -
+                            </span>
+                            <span class="badge availability-status availability-status-<?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>">
                                 <?php echo htmlspecialchars($statusLabel, ENT_QUOTES, 'UTF-8'); ?>
                             </span>
                         </label>
@@ -183,6 +184,16 @@ $blockedDates = blocked_fulfilment_dates_fetch_all();
     .blocked-date-tag-item .badge {
         padding: 8px 12px;
         font-size: 0.95rem;
+    }
+
+    .availability-status-blocked {
+        background-color: #c82333;
+        color: #fff;
+    }
+
+    .availability-status-available {
+        background-color: #218838;
+        color: #fff;
     }
 </style>
 
