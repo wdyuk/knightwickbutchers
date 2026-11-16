@@ -24,6 +24,10 @@
       <script src="js/vendor/respond.min.js"></script>
     <![endif]-->
     <script src="https://js.stripe.com/v3/"></script>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 3155e6f (head file)
     <script src="https://kit.fontawesome.com/79aebbd0ae.js" crossorigin="anonymous"></script>
     <script src="/js/scripts.min.js"></script>
     <script src="/js/custom.js"></script>
